@@ -1,0 +1,58 @@
+{
+  "name": "hexagram-service",
+  "version": "1.0.0",
+  "description": "The microservice for KairoScope. This is the service that is in charge of hexagram's operations.",
+  "main": "index.js",
+  "scripts": {
+    "coveralls": "cat ./coverage/lcov.info | node node_modules/.bin/coveralls",
+    "unitTest": "jest  __tests__/unit_tests/*",
+    "unitTestWatch": "jest  __tests__/unit_tests/* --watch",
+    "unitTestCoverage": "jest  __tests__/unit_tests/* --coverage",
+    "integrationTest": "env AWS_XRAY_CONTEXT_MISSING=LOG_ERROR TEST_MODE=integration jest __tests__/test_cases/* --forceExit",
+    "acceptanceTest": "env TEST_MODE=acceptance TEST_ROOT=https://xbfdcju8sf.execute-api.us-west-2.amazonaws.com/dev jest __tests__/test_cases/*"
+  },
+  "author": "Kevin W.",
+  "license": "MIT",
+  "jest": {
+    "testEnvironment": "node",
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "__tests__/helpers/",
+      "__tests__/debug_events/"
+    ]
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@babel/core": "^7.2.0",
+    "@babel/preset-env": "^7.2.0",
+    "@babel/runtime": "^7.2.0",
+    "@puresec/function-shield": "^1.2.2",
+    "aws-sdk": "^2.369.0",
+    "aws-xray-sdk": "^2.1.0",
+    "aws4": "^1.8.0",
+    "awscred": "^1.4.2",
+    "axios": "^0.18.0",
+    "babel-core": "^7.0.0-bridge.0",
+    "babel-eslint": "^10.0.1",
+    "chance": "^1.0.18",
+    "cheerio": "^1.0.0-rc.2",
+    "coveralls": "^3.0.2",
+    "dotenv": "^6.1.0",
+    "eslint": "^5.9.0",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-jsx-a11y": "^6.1.2",
+    "eslint-plugin-react": "^7.11.1",
+    "jest": "^23.6.0",
+    "jsonwebtoken": "^8.4.0",
+    "middy": "^0.20.0",
+    "mongo-sanitize": "^1.0.1",
+    "mongodb": "^3.1.10",
+    "serverless": "^1.35.1",
+    "serverless-iam-roles-per-function": "^1.0.4",
+    "serverless-plugin-aws-alerts": "^1.2.4",
+    "serverless-plugin-canary-deployments": "^0.4.4",
+    "serverless-plugin-tracing": "^2.0.0",
+    "serverless-pseudo-parameters": "^2.2.0"
+  }
+}
