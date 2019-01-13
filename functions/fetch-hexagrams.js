@@ -12,7 +12,7 @@ const handler = async (event, context) => {
     const result = await cloudwatch.trackExecTime('', () => promiseFindResult(db => db
       .collection(process.env.hexagramsCollectionName)
       .find(query)));
-    return { statusCode: 200, body: JSON.parse(result) };
+    return { statusCode: 200, body: JSON.stringify(result) };
   } catch (error) {
     log.error(`${context.functionName} function has error message: ${error}`);
     return { statusCode: 500 };
