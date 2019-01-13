@@ -2,7 +2,7 @@
 
 One of the microservice for KairoScope. This service is in charge of hexagram's operations.
 
-[[![Build Status](https://travis-ci.org/PengWang0316/KairoScope-Backend-Hexagram.svg?branch=master)](https://travis-ci.org/PengWang0316/KairoScope-Backend-Hexagram) [![Coverage Status](https://coveralls.io/repos/github/PengWang0316/KairoScope-Backend-Hexagram/badge.svg?branch=master)](https://coveralls.io/github/PengWang0316/KairoScope-Backend-Hexagram?branch=master)
+[![Build Status](https://travis-ci.org/PengWang0316/KairoScope-Backend-Hexagram.svg?branch=master)](https://travis-ci.org/PengWang0316/KairoScope-Backend-Hexagram) [![Coverage Status](https://coveralls.io/repos/github/PengWang0316/KairoScope-Backend-Hexagram/badge.svg?branch=master)](https://coveralls.io/github/PengWang0316/KairoScope-Backend-Hexagram?branch=master)
 
 ## Functions are hosting on AWS lambda function
 
