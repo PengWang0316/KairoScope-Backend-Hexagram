@@ -1,4 +1,4 @@
-service: kairoscope-unattached-journal
+service: kairoscope-hexagram-service
 
 plugins:
   - serverless-pseudo-parameters # Read the region and accout id
@@ -6,6 +6,7 @@ plugins:
   - serverless-plugin-tracing # Integrate the X-Ray
   - serverless-plugin-canary-deployments
   - serverless-plugin-aws-alerts # Automatically generate alerts (Could be used for stopping and rolling back a canary deployment)
+  - serverless-prune-plugin
 
 custom: # stage and logLevel for log function
   stage: ${opt:stage, self:provider.stage} # use stage or get if from the provider.stage. The second paramter is default
@@ -14,6 +15,9 @@ custom: # stage and logLevel for log function
     default: DEBUG
   serverless-iam-roles-per-function:
     defaultInherit: true # All function will inherit from the provider's IAM role.
+  prune:
+    automatic: true
+    number: 3
   # Use the serverless-plugin-aws-alerts to generate alarms in order to tragge a roll back for a canary deployment
   # alerts:
   #   stages:
@@ -67,3 +71,17 @@ package:
     - __tests__/**
     - build*
     - Information.txt
+
+functions:
+  fetch-hexagrams:
+    handler: functions/fetch-hexagrams.handler
+    events:
+      - http:
+          path: /hexagrams
+          method: get
+          cors: true
+    memorySize: 512
+    environment:
+      async_metrics: true # Use this variable to control whether send the metrics to CloudWatch Async
+    layers:
+      - ${cf:lambda-layers-dev.KairoscopeDependenciesLayerExport}
