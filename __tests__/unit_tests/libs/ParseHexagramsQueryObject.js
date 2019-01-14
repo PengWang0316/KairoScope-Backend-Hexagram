@@ -7,6 +7,8 @@ const objectId = new ObjectId(id);
 describe('ParseHexagramQueryObject', () => {
   test('Has an empty query', () => expect(parseHexagramQueryObject({})).toEqual({}));
 
+  test('Has an null as query', () => expect(parseHexagramQueryObject(null)).toEqual({}));
+
   test('Has all 0 for queries', () => expect(parseHexagramQueryObject({
     upperId: '0', lowerId: '0', line13Id: '0', line25Id: '0', line46Id: '0',
   })).toEqual({}));

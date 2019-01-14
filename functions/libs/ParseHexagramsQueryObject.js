@@ -3,6 +3,7 @@
 const { ObjectId } = require('mongodb');
 
 module.exports = query => {
+  if (!query) return {};
   const queryObject = {};
   if (query.upperId && query.upperId !== '0') queryObject.upper_trigrams_id = new ObjectId(query.upperId);
   if (query.lowerId && query.lowerId !== '0') queryObject.lower_trigrams_id = new ObjectId(query.lowerId);
