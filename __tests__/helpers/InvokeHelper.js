@@ -3,7 +3,7 @@ import axios from 'axios';
 import URL from 'url'; // Come from node.js module
 
 
-const APP_ROOT = '../../';
+const APP_ROOT = '../..';
 const isIntegrationTest = process.env.TEST_MODE === 'integration'; // Pass this from npm script to decide which kind of test will be run.
 
 // The helper to sign the request and return headers
@@ -69,9 +69,10 @@ const viaHandler = (handlerName, event = {}, context = {}) => {
   });
 };
 
-// const invokeFetchUnattachedJournal = (event, context) => isIntegrationTest
-//   ? viaHandler('fetch-unattached-journal', event, context)
-//   : viaHttp(`unattachedJournal?journalId=${event.queryStringParameters.journalId}`, { iam: false, isJwt: true });
+const invokeFetchHexagrams = (event, context) => isIntegrationTest
+  ? viaHandler('fetch-hexagrams', event, context)
+  : viaHttp(`hexagrams?query=${event.queryStringParameters}`, { iam: false, isJwt: false });
 
 module.exports = {
+  invokeFetchHexagrams,
 };

@@ -9,7 +9,7 @@ const parseHexagramsQueryObject = require('./libs/ParseHexagramsQueryObject');
 const handler = async (event, context) => {
   const query = parseHexagramsQueryObject(event.queryStringParameters);
   try {
-    const result = await cloudwatch.trackExecTime('', () => promiseFindResult(db => db
+    const result = await cloudwatch.trackExecTime('MongoDbFindLatancy', () => promiseFindResult(db => db
       .collection(process.env.hexagramsCollectionName)
       .find(query)));
     return { statusCode: 200, body: JSON.stringify(result) };
