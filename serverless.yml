@@ -85,3 +85,16 @@ functions:
       async_metrics: true # Use this variable to control whether send the metrics to CloudWatch Async
     layers:
       - ${cf:lambda-layers-dev.KairoscopeDependenciesLayerExport}
+
+  fetch-hexagram-based-on-img:
+    handler: functions/fetch-hexagram-based-on-img.handler
+    events:
+      - http:
+          path: /hexagram
+          method: get
+          cors: true
+    memorySize: 512
+    environment:
+      async_metrics: true # Use this variable to control whether send the metrics to CloudWatch Async
+    layers:
+      - ${cf:lambda-layers-dev.KairoscopeDependenciesLayerExport}
