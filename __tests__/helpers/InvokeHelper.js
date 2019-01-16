@@ -73,6 +73,11 @@ const invokeFetchHexagrams = (event, context) => isIntegrationTest
   ? viaHandler('fetch-hexagrams', event, context)
   : viaHttp(`hexagrams?query=${event.queryStringParameters}`, { iam: false, isJwt: false });
 
+const invokeFetchHexagramBasedOnImg = (event, context) => isIntegrationTest
+  ? viaHandler('fetch-hexagram-based-on-img', event, context)
+  : viaHttp(`hexagram?imgArray=${event.queryStringParameters.imgArray}`, { iam: false, isJwt: false });
+
 module.exports = {
   invokeFetchHexagrams,
+  invokeFetchHexagramBasedOnImg,
 };
