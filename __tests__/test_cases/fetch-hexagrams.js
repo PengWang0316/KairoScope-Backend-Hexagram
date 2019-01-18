@@ -20,6 +20,6 @@ describe('fetch-hexagrams: invoke the Get / endpoint', () => {
     expect(res.statusCode).toBe(200);
     expect(res.body).not.toBeUndefined();
     expect(res.body).not.toBeNull();
-    expect(res.body.length).toBe(64);
+    expect(Object.keys(res.body[0]).length).toBe(44);
   });
 });
