@@ -9,7 +9,7 @@
     "unitTestWatch": "jest  __tests__/unit_tests/* --watch",
     "unitTestCoverage": "jest  __tests__/unit_tests/* --coverage",
     "integrationTest": "env AWS_XRAY_CONTEXT_MISSING=LOG_ERROR TEST_MODE=integration jest __tests__/test_cases/* --forceExit",
-    "acceptanceTest": "env TEST_MODE=acceptance TEST_ROOT=https://vc94cu3lye.execute-api.us-west-2.amazonaws.com/dev jest __tests__/test_cases/*"
+    "acceptanceTest": "env TEST_MODE=acceptance TEST_ROOT=https://ap8luqzgb6.execute-api.us-west-2.amazonaws.com/dev jest __tests__/test_cases/*"
   },
   "author": "Kevin W.",
   "license": "MIT",

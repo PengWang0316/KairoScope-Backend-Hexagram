@@ -104,7 +104,7 @@ functions:
     events:
       - http:
           path: /hexagram
-          method: post
+          method: put
           cors: true
     memorySize: 512
     environment:

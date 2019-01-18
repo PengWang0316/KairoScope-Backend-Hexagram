@@ -79,7 +79,7 @@ const invokeFetchHexagramBasedOnImg = (event, context) => isIntegrationTest
 
 const invokeUpdateHexagram = (event, context) => isIntegrationTest
   ? viaHandler('update-hexagram', event, context)
-  : viaHttp('hexagram', { iam: false, isJwt: false, body: JSON.parse(event.body) }, 'post');
+  : viaHttp('hexagram', { iam: false, isJwt: false, body: JSON.parse(event.body) }, 'put');
 
 module.exports = {
   invokeFetchHexagrams,
