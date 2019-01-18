@@ -26,7 +26,7 @@ describe('update-hexagram', () => {
 
   test('Calling without error', async () => {
     const hexagram = { _id: '59613f863bbccb158d734c3d' };
-    const event = { body: { hexagram: JSON.stringify(hexagram), jwtMessage: 'jwtMessage' } };
+    const event = { body: JSON.stringify({ hexagram, jwtMessage: 'jwtMessage' }) };
     const context = {
       user: { _id: 'id', role: 1 },
     };
@@ -46,7 +46,7 @@ describe('update-hexagram', () => {
 
   test('Calling with a database error', async () => {
     const hexagram = { _id: '59613f863bbccb158d734c3d' };
-    const event = { body: { hexagram: JSON.stringify(hexagram), jwtMessage: 'jwtMessage' } };
+    const event = { body: JSON.stringify({ hexagram, jwtMessage: 'jwtMessage' }) };
     const context = {
       user: { _id: 'id', role: 1 },
       functionName: 'functionName',
@@ -63,7 +63,7 @@ describe('update-hexagram', () => {
 
   test('Calling with a user role error', async () => {
     const hexagram = { _id: '59613f863bbccb158d734c3d' };
-    const event = { body: { hexagram: JSON.stringify(hexagram), jwtMessage: 'jwtMessage' } };
+    const event = { body: JSON.stringify({ hexagram, jwtMessage: 'jwtMessage' }) };
     const context = {
       user: { _id: 'id', role: 3 },
       functionName: 'functionName',
