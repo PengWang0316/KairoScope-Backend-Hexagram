@@ -36,6 +36,7 @@ const init = () => new Promise(async (resolve, reject) => {
   process.env.hexagramsCollectionName = params['hexagrams-collection-name'];
   process.env.jwt = params['test-jwt-key'];
   process.env.jwtRole1 = params['test-jwt-key-role-1'];
+  process.env.ADMINISTRATOR_ROLE = '1';
 
   // User the awscred library to load credantial keys from the local profile.
   awscred.loadCredentials((err, data) => {
