@@ -1,7 +1,7 @@
 'use strict';
 
 const correlationIds = require('../libs/correlation-ids');
-const log = require('../libs/log');
+const log = require('@kevinwang0316/log');
 
 const captureHttp = (headers, awsRequestId, sampleDebugLogRate) => {
   if (!headers) {

@@ -1,6 +1,6 @@
 'use strict';
 
-const { initialConnects } = require('../libs/MongoDBHelper');
+const { initialConnects } = require('@kevinwang0316/mongodb-helper');
 
 module.exports = {
   before: (handler, next) => {

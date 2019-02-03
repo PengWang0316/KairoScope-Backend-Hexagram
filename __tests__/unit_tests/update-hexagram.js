@@ -1,8 +1,8 @@
 import { ObjectId } from 'mongodb';
 
-import mongodbHelper from '../../libs/MongoDBHelper';
-import cloudwatch from '../../libs/cloudwatch';
-import log from '../../libs/log';
+import mongodbHelper from '@kevinwang0316/mongodb-helper';
+import cloudwatch from '@kevinwang0316/cloudwatch';
+import log from '@kevinwang0316/log';
 import { handler } from '../../functions/update-hexagram';
 
 require('../helpers/initailEnvsForUnitTest');
@@ -11,11 +11,11 @@ const mockUpdateOne = jest.fn();
 const mockCollection = jest.fn().mockReturnValue({ updateOne: mockUpdateOne });
 
 jest.mock('../../middlewares/wrapper', () => functionHandler => ({ use: () => functionHandler }));
-jest.mock('../../libs/MongoDBHelper', () => ({
+jest.mock('@kevinwang0316/mongodb-helper', () => ({
   promiseInsertResult: jest.fn().mockImplementation(cb => cb({ collection: mockCollection })),
 }));
-jest.mock('../../libs/log', () => ({ error: jest.fn() }));
-jest.mock('../../libs/cloudwatch', () => ({ trackExecTime: jest.fn().mockImplementation((name, func) => func()) }));
+jest.mock('@kevinwang0316/log', () => ({ error: jest.fn() }));
+jest.mock('@kevinwang0316/cloudwatch', () => ({ trackExecTime: jest.fn().mockImplementation((name, func) => func()) }));
 
 describe('update-hexagram', () => {
   beforeEach(() => {

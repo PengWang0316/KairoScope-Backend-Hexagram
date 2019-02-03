@@ -1,6 +1,6 @@
-import mongodbHelper from '../../libs/MongoDBHelper';
-import cloudwatch from '../../libs/cloudwatch';
-import log from '../../libs/log';
+import mongodbHelper from '@kevinwang0316/mongodb-helper';
+import cloudwatch from '@kevinwang0316/cloudwatch';
+import log from '@kevinwang0316/log';
 import { handler } from '../../functions/fetch-hexagrams';
 import parseHexagramsQueryObject from '../../functions/libs/ParseHexagramsQueryObject';
 
@@ -11,11 +11,11 @@ const mockFind = jest.fn().mockReturnValue(findReturnValue);
 const mockCollection = jest.fn().mockReturnValue({ find: mockFind });
 
 jest.mock('../../middlewares/wrapper', () => functionHandler => functionHandler);
-jest.mock('../../libs/MongoDBHelper', () => ({
+jest.mock('@kevinwang0316/mongodb-helper', () => ({
   promiseFindResult: jest.fn().mockImplementation(cb => cb({ collection: mockCollection })),
 }));
-jest.mock('../../libs/log', () => ({ error: jest.fn() }));
-jest.mock('../../libs/cloudwatch', () => ({ trackExecTime: jest.fn().mockImplementation((name, func) => func()) }));
+jest.mock('@kevinwang0316/log', () => ({ error: jest.fn() }));
+jest.mock('@kevinwang0316/cloudwatch', () => ({ trackExecTime: jest.fn().mockImplementation((name, func) => func()) }));
 jest.mock('../../functions/libs/ParseHexagramsQueryObject', () => jest.fn().mockReturnValue('mock query'));
 
 describe('fetch-hexagrams', () => {

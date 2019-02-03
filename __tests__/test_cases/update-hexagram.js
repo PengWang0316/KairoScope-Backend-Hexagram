@@ -2,7 +2,7 @@ import { ObjectId } from 'mongodb';
 
 import { invokeUpdateHexagram } from '../helpers/InvokeHelper';
 import initEvns from '../helpers/InitialEnvs';
-import { getDB, initialConnects, promiseFindResult, promiseInsertResult } from '../../libs/MongoDBHelper';
+import { getDB, initialConnects, promiseFindResult, promiseInsertResult } from '@kevinwang0316/mongodb-helper';
 
 let context;
 const hexagramId = new ObjectId();

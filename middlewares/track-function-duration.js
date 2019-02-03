@@ -1,6 +1,6 @@
 'use strict';
 
-const log = require('../libs/log');
+const log = require('@kevinwang0316/log');
 
 let start;
 module.exports = {

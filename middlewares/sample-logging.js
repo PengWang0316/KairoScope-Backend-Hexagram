@@ -1,6 +1,6 @@
 'use strict';
 
-const log = require('../libs/log');
+const log = require('@kevinwang0316/log');
 // const correlationIds = require('../libs/correlation-ids');
 
 module.exports = (option = { sampleRate: 0.01 }) => { // The defualt sample rate is 1%
