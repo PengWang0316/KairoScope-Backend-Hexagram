@@ -10,10 +10,9 @@ const {
 
 const { STAGE } = process.env;
 
-const sampleLogging = require('./sample-logging');
-const initializeMongodb = require('./initialize-mongodb');
-const verifyUser = require('./verify-user');
-const mongoSanitize = require('./mongo-sanitize');
+const {
+  initializeMongoDB, mongoSanitize, sampleLogging,
+} = require('@kevinwang0316/lambda-middlewares');
 // const functionShield = require('./function-shield');
 
 module.exports = func => middy(func)
