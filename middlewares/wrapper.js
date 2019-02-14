@@ -42,5 +42,5 @@ module.exports = func => middy(func)
   }))
   .use(mongoSanitize)
   .use(doNotWaitForEmptyEventLoop())
-  .use(initializeMongodb);
+  .use(initializeMongoDB);
   // .use(verifyUser); Most of the functions in this service do not require users login
