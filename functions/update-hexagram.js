@@ -4,9 +4,9 @@ const { ObjectId } = require('mongodb');
 const log = require('@kevinwang0316/log');
 const cloudwatch = require('@kevinwang0316/cloudwatch');
 const { promiseInsertResult } = require('@kevinwang0316/mongodb-helper');
+const { verifyJWT } = require('@kevinwang0316/lambda-middlewares');
 
 const wrapper = require('../middlewares/wrapper');
-const verifyUser = require('../middlewares/verify-user');
 
 const handler = async (event, context) => {
   const { hexagram } = JSON.parse(event.body);
@@ -25,4 +25,4 @@ const handler = async (event, context) => {
   }
 };
 
-module.exports.handler = wrapper(handler).use(verifyUser);
+module.exports.handler = wrapper(handler).use(verifyJWT);
