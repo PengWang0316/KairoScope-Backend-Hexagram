@@ -20,10 +20,7 @@ jest.mock('../../functions/libs/ParseHexagramsQueryObject', () => jest.fn().mock
 
 describe('fetch-hexagrams', () => {
   beforeEach(() => {
-    mongodbHelper.promiseFindResult.mockClear();
-    log.error.mockClear();
-    cloudwatch.trackExecTime.mockClear();
-    parseHexagramsQueryObject.mockClear();
+    jest.clearAllMocks();
   });
 
   test('Calling without error', async () => {
