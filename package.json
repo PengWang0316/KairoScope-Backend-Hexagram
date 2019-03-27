@@ -22,7 +22,7 @@
     ]
   },
   "dependencies": {
-    "@kevinwang0316/redis-helper": "^1.0.0",
+    "@kevinwang0316/redis-helper": "^1.0.1",
     "redis": "^2.8.0"
   },
   "devDependencies": {
