@@ -18,7 +18,7 @@ const parseHexagramsQueryObject = require('./libs/ParseHexagramsQueryObject');
  */
 const fetchHexagramsFromDB = async (query, functionName) => {
   try {
-    const result = await cloudwatch.trackExecTime('MongoDbFindLatancy', () => promiseFindResult(db => db
+    const result = await cloudwatch.trackExecTime('MongoDbFindLatency', () => promiseFindResult(db => db
       .collection(process.env.hexagramsCollectionName)
       .find(query)));
     return { statusCode: 200, body: JSON.stringify(result) };
@@ -36,7 +36,7 @@ const handler = async (event, context) => {
     createClient(context.redisHost, context.redisPort, context.redisPassword);
     try {
       // const cachedHexagrams = await getAsync(process.env.redisKeyAllHexagram);
-      const cachedHexagrams = await cloudwatch.trackExecTime('RedisGetLatancy', () => getAsync(process.env.redisKeyAllHexagram));
+      const cachedHexagrams = await cloudwatch.trackExecTime('RedisGetLatency', () => getAsync(process.env.redisKeyAllHexagram));
       if (cachedHexagrams === null) {
         log.info('Redis cache is missing.');
         const result = await fetchHexagramsFromDB(query, context.functionName);
