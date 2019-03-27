@@ -3,8 +3,9 @@
 const log = require('@kevinwang0316/log');
 const cloudwatch = require('@kevinwang0316/cloudwatch');
 const { promiseFindResult } = require('@kevinwang0316/mongodb-helper');
-const redis = require('redis');
-const { promisify } = require('util');
+const {
+  createClient, getAsync, setAsync, quit,
+} = require('@kevinwang0316/redis-helper');
 
 const wrapper = require('../middlewares/wrapper');
 const parseHexagramsQueryObject = require('./libs/ParseHexagramsQueryObject');
@@ -32,31 +33,23 @@ const handler = async (event, context) => {
   if (Object.keys(query).length === 0) {
     // Get all hexagram could be served from Redis
     log.debug('Fetching all hexagram, initialize the Redis client.');
-    const client = redis.createClient({
-      host: context.redisHost,
-      port: context.redisPort,
-      passwrod: context.redisPassword,
-      no_ready_check: true,
-    });
-    client.auth(context.redisPassword);
-    const getAsync = promisify(client.get).bind(client);
-    const setAsync = promisify(client.set).bind(client);
+    createClient(context.redisHost, context.redisPort, context.redisPassword);
     try {
       const cachedHexagrams = await getAsync(process.env.redisKeyAllHexagram);
       if (cachedHexagrams === null) {
         log.info('Redis cache is missing.');
         const result = await fetchHexagramsFromDB(query, context.functionName);
         await setAsync(process.env.redisKeyAllHexagram, result.body);
-        client.quit();
+        quit();
         return result;
       }
       log.info('Rdis cache hits');
-      client.quit();
+      quit();
       return { statusCode: 200, body: cachedHexagrams };
     } catch (err) {
       log.error(`Redis get error: ${err}`);
       log.error('Fallback to fetch from the database.');
-      client.quit();
+      quit();
       return fetchHexagramsFromDB(query, context.functionName);
     }
   } else {
