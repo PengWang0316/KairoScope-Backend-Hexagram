@@ -35,7 +35,8 @@ const handler = async (event, context) => {
     log.debug('Fetching all hexagram, initialize the Redis client.');
     createClient(context.redisHost, context.redisPort, context.redisPassword);
     try {
-      const cachedHexagrams = await getAsync(process.env.redisKeyAllHexagram);
+      // const cachedHexagrams = await getAsync(process.env.redisKeyAllHexagram);
+      const cachedHexagrams = await cloudwatch.trackExecTime('RedisGetLatancy', () => getAsync(process.env.redisKeyAllHexagram));
       if (cachedHexagrams === null) {
         log.info('Redis cache is missing.');
         const result = await fetchHexagramsFromDB(query, context.functionName);
