@@ -17,16 +17,23 @@ jest.mock('@kevinwang0316/mongodb-helper', () => ({
 jest.mock('@kevinwang0316/log', () => ({ error: jest.fn() }));
 jest.mock('@kevinwang0316/cloudwatch', () => ({ trackExecTime: jest.fn().mockImplementation((name, func) => func()) }));
 jest.mock('../../functions/libs/ParseHexagramsQueryObject', () => jest.fn().mockReturnValue('mock query'));
+jest.mock('@kevinwang0316/redis-helper', () => ({
+  createClient: jest.fn(),
+  getAsync: jest.fn(),
+  setAsync: jest.fn().mockReturnValue(null),
+  quit: jest.fn(),
+}));
 
 describe('fetch-hexagrams', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
-  test('Calling without error', async () => {
+  test('Calling without error and has query parameters', async () => {
     const event = { queryStringParameters: { id: 'id' } };
     const context = {
       user: { _id: 'id' },
+      functionName: 'functionName',
     };
 
     const result = await handler(event, context);
@@ -41,6 +48,10 @@ describe('fetch-hexagrams', () => {
     expect(parseHexagramsQueryObject).toHaveBeenLastCalledWith(event.queryStringParameters);
     expect(result).toEqual({ statusCode: 200, body: JSON.stringify(findReturnValue) });
     expect(log.error).not.toHaveBeenCalled();
+  });
+
+  test('Calling without error and no query parameter, no cache hit', () => {
+    
   });
 
   test('Calling with an error', async () => {
