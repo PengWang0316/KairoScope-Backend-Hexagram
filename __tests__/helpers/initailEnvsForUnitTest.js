@@ -3,4 +3,5 @@ process.env = {
   hexagramsCollectionName: 'hexagrams',
   jwtName: 'jwtMessage',
   ADMINISTRATOR_ROLE: '1',
+  redisKeyAllHexagram: 'allHexagram',
 };

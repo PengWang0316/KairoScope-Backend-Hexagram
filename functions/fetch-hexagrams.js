@@ -38,13 +38,13 @@ const handler = async (event, context) => {
       // const cachedHexagrams = await getAsync(process.env.redisKeyAllHexagram);
       const cachedHexagrams = await cloudwatch.trackExecTime('RedisGetLatency', () => getAsync(process.env.redisKeyAllHexagram));
       if (cachedHexagrams === null) {
-        log.info('Redis cache is missing.');
+        log.debug('Redis cache is missing.');
         const result = await fetchHexagramsFromDB(query, context.functionName);
         await setAsync(process.env.redisKeyAllHexagram, result.body);
         quit();
         return result;
       }
-      log.info('Rdis cache hits');
+      log.debug('Rdis cache hits');
       quit();
       return { statusCode: 200, body: cachedHexagrams };
     } catch (err) {
