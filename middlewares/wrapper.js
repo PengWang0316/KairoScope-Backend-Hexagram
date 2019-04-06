@@ -28,6 +28,9 @@ module.exports = func => middy(func)
       dbUrl: `/kairoscope/${STAGE}/db-host`,
       dbName: `/kairoscope/${STAGE}/db-name`,
       jwtSecret: `/kairoscope/${STAGE}/jwt-secret`,
+      redisHost: `/kairoscope/${STAGE}/redis-host`,
+      redisPort: `/kairoscope/${STAGE}/redis-port`,
+      redisPassword: `/kairoscope/${STAGE}/redis-password`,
       FUNCTION_SHIELD_TOKEN: `/kairoscope/${STAGE}/function_shield_token`,
     },
   }))

@@ -41,6 +41,7 @@ provider:
     hexagramsCollectionName: ${ssm:/kairoscope/${self:custom.stage}/hexagrams-collection-name}
     jwtName: ${ssm:/kairoscope/${self:custom.stage}/jwt-name}
     ADMINISTRATOR_ROLE: 1
+    redisKeyAllHexagram: allHexagram
   iamRoleStatements:
     - Effect: Allow
       Action: cloudwatch:PutMetricData
