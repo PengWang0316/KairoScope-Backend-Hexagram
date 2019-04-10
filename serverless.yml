@@ -42,6 +42,7 @@ provider:
     jwtName: ${ssm:/kairoscope/${self:custom.stage}/jwt-name}
     ADMINISTRATOR_ROLE: 1
     redisKeyAllHexagram: allHexagram
+    redisKeyHexagrams: ${ssm:/kairoscope/${self:custom.stage}/redis-key-hexagrams}
   iamRoleStatements:
     - Effect: Allow
       Action: cloudwatch:PutMetricData
