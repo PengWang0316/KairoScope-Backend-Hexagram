@@ -10,7 +10,7 @@ import parseHexagramsQueryObject from '../../functions/libs/ParseHexagramsQueryO
 
 require('../helpers/initailEnvsForUnitTest');
 
-const findReturnValue = { _id: 'testId' };
+const findReturnValue = [{ _id: 'testId', img_arr: 123 }, { _id: 'testId1', img_arr: 1243 }];
 const mockFind = jest.fn().mockReturnValue(findReturnValue);
 const mockCollection = jest.fn().mockReturnValue({ find: mockFind });
 
@@ -68,6 +68,8 @@ describe('fetch-hexagrams', () => {
       redisPort: 'port',
       redisPassword: 'pw',
     };
+    const expectHexagramObject = {};
+    findReturnValue.forEach(item => { expectHexagramObject[item.img_arr] = item; });
     // cloudwatch.trackExecTime.mockResolvedValueOnce(null);
     // cloudwatch.trackExecTime.mockResolvedValueOnce({ value: 'db value' });
 
@@ -79,8 +81,9 @@ describe('fetch-hexagrams', () => {
     expect(createClient).toHaveBeenCalledTimes(1);
     expect(createClient).toHaveBeenLastCalledWith(context.redisHost, context.redisPort, context.redisPassword);
     expect(cloudwatch.trackExecTime).toHaveBeenCalledTimes(2);
-    expect(setAsync).toHaveBeenCalledTimes(1);
-    expect(setAsync).toHaveBeenLastCalledWith(process.env.redisKeyAllHexagram, JSON.stringify(findReturnValue));
+    expect(setAsync).toHaveBeenCalledTimes(2);
+    expect(setAsync).toHaveBeenNthCalledWith(1, process.env.redisKeyAllHexagram, JSON.stringify(findReturnValue));
+    expect(setAsync).toHaveBeenNthCalledWith(2, process.env.redisKeyHexagrams, expectHexagramObject);
     expect(getAsync).toHaveBeenCalledTimes(1);
     expect(getAsync).toHaveBeenLastCalledWith(process.env.redisKeyAllHexagram);
     expect(quit).toHaveBeenCalledTimes(1);
