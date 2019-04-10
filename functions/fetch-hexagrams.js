@@ -42,11 +42,11 @@ const handler = async (event, context) => {
         const result = await fetchHexagramsFromDB(query, context.functionName);
         // Assemble a hexagrams object for Redis
         const hexagramsObj = {};
-        result.body.forEach(item => { hexagramsObj[item.img_arr] = item; });
-        await Promise.all(
+        JSON.parse(result.body).forEach(item => { hexagramsObj[item.img_arr] = item; });
+        await Promise.all([
           setAsync(process.env.redisKeyAllHexagram, result.body),
           setAsync(process.env.redisKeyHexagrams, hexagramsObj),
-        );
+        ]);
         quit();
         return result;
       }
