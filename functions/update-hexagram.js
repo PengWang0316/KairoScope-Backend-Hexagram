@@ -14,12 +14,25 @@ const wrapper = require('../middlewares/wrapper');
 const updateRedis = async (redisHost, redisPort, redisPassword, newHexagram) => {
   try {
     createClient(redisHost, redisPort, redisPassword);
-    const cachedHexagrams = await cloudwatch.trackExecTime('RedisGetLatency', () => getAsync(process.env.redisKeyAllHexagram));
-    if (cachedHexagrams !== null) {
-      const newHexagrams = JSON.parse(cachedHexagrams)
+    const cachedHexagrams = await Promise.all([
+      cloudwatch.trackExecTime('RedisGetLatency', () => getAsync(process.env.redisKeyAllHexagram)),
+      cloudwatch.trackExecTime('RedisGetLatency', () => getAsync(process.env.redisKeyHexagrams)),
+    ]);
+
+    const setPromises = [];
+    // Update the allHexagrams cache
+    if (cachedHexagrams[0] !== null) {
+      const newHexagrams = JSON.parse(cachedHexagrams[0])
         .map(hexagram => (hexagram._id === newHexagram._id.toString() ? newHexagram : hexagram));
-      await cloudwatch.trackExecTime('RedisSetLatency', () => setAsync(process.env.redisKeyAllHexagram, JSON.stringify(newHexagrams)));
+      setPromises.push(cloudwatch.trackExecTime('RedisSetLatency', () => setAsync(process.env.redisKeyAllHexagram, JSON.stringify(newHexagrams))));
     }
+    // Update the hexagrams cache
+    if (cachedHexagrams[1] !== null) {
+      const newHexagrams = JSON.parse(cachedHexagrams[1]);
+      newHexagrams[newHexagram.img_arr] = newHexagram;
+      setPromises.push(cloudwatch.trackExecTime('RedisSetLatency', () => setAsync(process.env.redisKeyHexagrams, JSON.stringify(newHexagrams))));
+    }
+    await Promise.all(setPromises);
   } catch (err) {
     log.error(`Redis error: ${err}`);
   } finally {
