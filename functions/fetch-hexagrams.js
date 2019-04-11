@@ -45,7 +45,7 @@ const handler = async (event, context) => {
         JSON.parse(result.body).forEach(item => { hexagramsObj[item.img_arr] = item; });
         await Promise.all([
           setAsync(process.env.redisKeyAllHexagram, result.body),
-          setAsync(process.env.redisKeyHexagrams, hexagramsObj),
+          setAsync(process.env.redisKeyHexagrams, JSON.stringify(hexagramsObj)),
         ]);
         quit();
         return result;

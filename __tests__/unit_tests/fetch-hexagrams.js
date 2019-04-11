@@ -83,7 +83,7 @@ describe('fetch-hexagrams', () => {
     expect(cloudwatch.trackExecTime).toHaveBeenCalledTimes(2);
     expect(setAsync).toHaveBeenCalledTimes(2);
     expect(setAsync).toHaveBeenNthCalledWith(1, process.env.redisKeyAllHexagram, JSON.stringify(findReturnValue));
-    expect(setAsync).toHaveBeenNthCalledWith(2, process.env.redisKeyHexagrams, expectHexagramObject);
+    expect(setAsync).toHaveBeenNthCalledWith(2, process.env.redisKeyHexagrams, JSON.stringify(expectHexagramObject));
     expect(getAsync).toHaveBeenCalledTimes(1);
     expect(getAsync).toHaveBeenLastCalledWith(process.env.redisKeyAllHexagram);
     expect(quit).toHaveBeenCalledTimes(1);
