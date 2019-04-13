@@ -45,7 +45,7 @@ describe('update-hexagram', () => {
 
     const result = await handler(event, context);
 
-    expect(cloudwatch.trackExecTime).toHaveBeenCalledTimes(2);
+    expect(cloudwatch.trackExecTime).toHaveBeenCalledTimes(3);
     expect(mongodbHelper.promiseInsertResult).toHaveBeenCalledTimes(1);
     expect(mockCollection).toHaveBeenCalledTimes(1);
     expect(mockCollection).toHaveBeenLastCalledWith(process.env.hexagramsCollectionName);
@@ -56,13 +56,14 @@ describe('update-hexagram', () => {
     // For updateRedis function
     expect(createClient).toHaveBeenCalledTimes(1);
     expect(createClient).toHaveBeenLastCalledWith(context.redisHost, context.redisPort, context.redisPassword);
-    expect(getAsync).toHaveBeenCalledTimes(1);
-    expect(getAsync).toHaveBeenLastCalledWith(process.env.redisKeyAllHexagram);
+    expect(getAsync).toHaveBeenCalledTimes(2);
+    expect(getAsync).toHaveBeenNthCalledWith(1, process.env.redisKeyAllHexagram);
+    expect(getAsync).toHaveBeenNthCalledWith(2, process.env.redisKeyHexagrams);
     expect(setAsync).not.toHaveBeenCalled();
     expect(quit).toHaveBeenCalledTimes(1);
   });
 
-  test('Calling without error but has Redis cache', async () => {
+  test('Calling without error but has Redis cache for allHexagram', async () => {
     const hexagram = { _id: '59613f863bbccb158d734c3d' };
     const event = { body: JSON.stringify({ hexagram, jwtMessage: 'jwtMessage' }) };
     const context = {
@@ -78,7 +79,7 @@ describe('update-hexagram', () => {
 
     const result = await handler(event, context);
 
-    expect(cloudwatch.trackExecTime).toHaveBeenCalledTimes(3);
+    expect(cloudwatch.trackExecTime).toHaveBeenCalledTimes(4);
     expect(mongodbHelper.promiseInsertResult).toHaveBeenCalledTimes(1);
     expect(mockCollection).toHaveBeenCalledTimes(1);
     expect(mockCollection).toHaveBeenLastCalledWith(process.env.hexagramsCollectionName);
@@ -89,10 +90,84 @@ describe('update-hexagram', () => {
     // For updateRedis function
     expect(createClient).toHaveBeenCalledTimes(1);
     expect(createClient).toHaveBeenLastCalledWith(context.redisHost, context.redisPort, context.redisPassword);
-    expect(getAsync).toHaveBeenCalledTimes(1);
-    expect(getAsync).toHaveBeenLastCalledWith(process.env.redisKeyAllHexagram);
+    expect(getAsync).toHaveBeenCalledTimes(2);
+    expect(getAsync).toHaveBeenNthCalledWith(1, process.env.redisKeyAllHexagram);
+    expect(getAsync).toHaveBeenNthCalledWith(2, process.env.redisKeyHexagrams);
     expect(setAsync).toHaveBeenCalledTimes(1);
     expect(setAsync).toHaveBeenLastCalledWith(process.env.redisKeyAllHexagram, JSON.stringify([mockCacheValue[0], mockReturnValue.value]));
+    expect(quit).toHaveBeenCalledTimes(1);
+  });
+
+  test('Calling without error but has Redis cache for hexagrams', async () => {
+    const hexagram = { _id: '59613f863bbccb158d734c3d' };
+    const event = { body: JSON.stringify({ hexagram, jwtMessage: 'jwtMessage' }) };
+    const context = {
+      user: { _id: 'id', role: 1 },
+      redisHost: 'host',
+      redisPort: 'port',
+      redisPassword: 'pw',
+    };
+    const newHexagram = { ...hexagram };
+    delete newHexagram._id;
+    const mockCacheValue = [{ _id: '1', value: 'value1' }, { _id: '2', value: 'value2' }];
+    getAsync.mockReturnValueOnce(null);
+    getAsync.mockReturnValueOnce(JSON.stringify(mockCacheValue));
+
+    const result = await handler(event, context);
+
+    expect(cloudwatch.trackExecTime).toHaveBeenCalledTimes(4);
+    expect(mongodbHelper.promiseInsertResult).toHaveBeenCalledTimes(1);
+    expect(mockCollection).toHaveBeenCalledTimes(1);
+    expect(mockCollection).toHaveBeenLastCalledWith(process.env.hexagramsCollectionName);
+    expect(mockFindOneAndUpdate).toHaveBeenCalledTimes(1);
+    expect(mockFindOneAndUpdate).toHaveBeenLastCalledWith({ _id: new ObjectId(hexagram._id) }, { $set: newHexagram }, { returnOriginal: false });
+    expect(log.error).not.toHaveBeenCalled();
+    expect(result).toEqual({ statusCode: 200 });
+    // For updateRedis function
+    expect(createClient).toHaveBeenCalledTimes(1);
+    expect(createClient).toHaveBeenLastCalledWith(context.redisHost, context.redisPort, context.redisPassword);
+    expect(getAsync).toHaveBeenCalledTimes(2);
+    expect(getAsync).toHaveBeenNthCalledWith(1, process.env.redisKeyAllHexagram);
+    expect(getAsync).toHaveBeenNthCalledWith(2, process.env.redisKeyHexagrams);
+    expect(setAsync).toHaveBeenCalledTimes(1);
+    expect(setAsync).toHaveBeenLastCalledWith(process.env.redisKeyHexagrams, JSON.stringify(mockCacheValue));
+    expect(quit).toHaveBeenCalledTimes(1);
+  });
+  
+  test('Calling without error but has Redis cache for allHexagram and hexagrams', async () => {
+    const hexagram = { _id: '59613f863bbccb158d734c3d' };
+    const event = { body: JSON.stringify({ hexagram, jwtMessage: 'jwtMessage' }) };
+    const context = {
+      user: { _id: 'id', role: 1 },
+      redisHost: 'host',
+      redisPort: 'port',
+      redisPassword: 'pw',
+    };
+    const newHexagram = { ...hexagram };
+    delete newHexagram._id;
+    const mockCacheValue = [{ _id: '1', value: 'value1' }, { _id: '2', value: 'value2' }];
+    getAsync.mockReturnValueOnce(JSON.stringify(mockCacheValue));
+    getAsync.mockReturnValueOnce(JSON.stringify(mockCacheValue));
+
+    const result = await handler(event, context);
+
+    expect(cloudwatch.trackExecTime).toHaveBeenCalledTimes(5);
+    expect(mongodbHelper.promiseInsertResult).toHaveBeenCalledTimes(1);
+    expect(mockCollection).toHaveBeenCalledTimes(1);
+    expect(mockCollection).toHaveBeenLastCalledWith(process.env.hexagramsCollectionName);
+    expect(mockFindOneAndUpdate).toHaveBeenCalledTimes(1);
+    expect(mockFindOneAndUpdate).toHaveBeenLastCalledWith({ _id: new ObjectId(hexagram._id) }, { $set: newHexagram }, { returnOriginal: false });
+    expect(log.error).not.toHaveBeenCalled();
+    expect(result).toEqual({ statusCode: 200 });
+    // For updateRedis function
+    expect(createClient).toHaveBeenCalledTimes(1);
+    expect(createClient).toHaveBeenLastCalledWith(context.redisHost, context.redisPort, context.redisPassword);
+    expect(getAsync).toHaveBeenCalledTimes(2);
+    expect(getAsync).toHaveBeenNthCalledWith(1, process.env.redisKeyAllHexagram);
+    expect(getAsync).toHaveBeenNthCalledWith(2, process.env.redisKeyHexagrams);
+    expect(setAsync).toHaveBeenCalledTimes(2);
+    expect(setAsync).toHaveBeenNthCalledWith(1, process.env.redisKeyAllHexagram, JSON.stringify([mockCacheValue[0], mockReturnValue.value]));
+    expect(setAsync).toHaveBeenNthCalledWith(2, process.env.redisKeyHexagrams, JSON.stringify(mockCacheValue));
     expect(quit).toHaveBeenCalledTimes(1);
   });
 
