@@ -133,7 +133,7 @@ describe('update-hexagram', () => {
     expect(setAsync).toHaveBeenLastCalledWith(process.env.redisKeyHexagrams, JSON.stringify(mockCacheValue));
     expect(quit).toHaveBeenCalledTimes(1);
   });
-  
+
   test('Calling without error but has Redis cache for allHexagram and hexagrams', async () => {
     const hexagram = { _id: '59613f863bbccb158d734c3d' };
     const event = { body: JSON.stringify({ hexagram, jwtMessage: 'jwtMessage' }) };
