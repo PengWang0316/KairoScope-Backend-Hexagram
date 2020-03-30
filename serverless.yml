@@ -31,7 +31,7 @@ custom: # stage and logLevel for log function
 
 provider:
   name: aws
-  runtime: nodejs8.10
+  runtime: nodejs12.x
   region: us-west-2
   tracing: true # Use the serverless-plugin-tracing plugin to enable the X-Ray
   environment:
