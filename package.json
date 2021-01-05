@@ -40,7 +40,7 @@
     "aws-xray-sdk": "^2.2.0",
     "aws4": "^1.8.0",
     "awscred": "^1.4.2",
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^10.0.1",
     "chance": "^1.0.18",
