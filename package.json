@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "@kevinwang0316/redis-helper": "^1.0.1",
-    "redis": "^2.8.0"
+    "redis": "^3.1.1"
   },
   "devDependencies": {
     "@babel/core": "^7.4.0",
